@@ -3,6 +3,7 @@ import UserModel from "@/model/User";
 import bcrypt from "bcryptjs";
 import { sendVerificationEmail } from "@/helpers/sendVerificationEmail";
 import { success } from "zod";
+import { verify } from "crypto";
 
 export async function POST(request: Request) {
     await dbConnect()
@@ -31,23 +32,33 @@ export async function POST(request: Request) {
                      message: "Email is already registered"
                 }, {status: 400})
             }
-
+        else{
             const verifyCode = Math.floor(100000 + Math.random() * 900000).toString()
 
          const expiryDate = new Date();
          expiryDate.setHours(expiryDate.getHours()+1)
 
 
-         new UserModel({
+        const newUser  =  new UserModel({
              username,
                 email,
                 password: hashedpassword,
-                verifyCode:string,
-                verifyCodeExpiry:Date,
-                isVerified: boolean,
-                isAcceptingMessage: boolean, 
-                messages: Message[],
+                verifyCode,
+                verifyCodeExpiry:expiryDate,
+                isVerified: false,
+                isAcceptingMessage: true, 
+                messages: [],
          })
+         await newUser.save()
+}
+
+// send verification email
+
+const emailResponse = await sendVerificationEmail(
+    email,
+    password,
+    verifyCode
+)
 
     } catch (error) {
         console.error('Error registering error', error)
