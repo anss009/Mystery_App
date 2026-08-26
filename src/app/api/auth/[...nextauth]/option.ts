@@ -55,10 +55,10 @@ import CredentialsProvider from "next-auth/providers/credentials";
             },
             async session({session, token}){
                 if (token) {
-                    session._id = user._id?.toString()
-                    session.IsVerified = user.isVerified;
-                    session.isAcceptingMessages = user.isAcceptingMessages;
-                    session.username = user.username;
+                    session.user._id = token._id
+                    session.user.isVerified = token.isVerified;
+                    session.user.isAcceptingMessages = token.isAcceptingMessages;
+                    session.user.username = token.username;
                 }
                 return session
             },
