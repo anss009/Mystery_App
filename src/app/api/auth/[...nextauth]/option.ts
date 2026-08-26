@@ -12,7 +12,7 @@ import { CredentialsProvider } from "next-auth/providers/credentials";
                 id :"credentials",
                 name: "Credentials",
                 credentials:{
-                    username:{label: "Username", type:"text",placeholder: "jsmith"},
+                    username:{label: "email", type:"text"},
                     password:{label: "password", type: "password"}
                 }
             })
