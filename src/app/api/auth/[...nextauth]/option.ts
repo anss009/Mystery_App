@@ -41,6 +41,33 @@ import CredentialsProvider from "next-auth/providers/credentials";
                         throw new Error(error)
                      }
                 }
-            })
-        ]
+            }) 
+        ],
+        callbacks:{
+            async jwt({token, user}){
+                if (user) {
+                    token._id = user._id?.toString()
+                    token.IsVerified = user.isVerified;
+                    token.isAcceptingMessages = user.isAcceptingMessages;
+                    token.username = user.username 
+                }
+                return token
+            },
+            async session({session, token}){
+                if (token) {
+                    session._id = user._id?.toString()
+                    session.IsVerified = user.isVerified;
+                    session.isAcceptingMessages = user.isAcceptingMessages;
+                    session.username = user.username;
+                }
+                return session
+            },
+        },
+        pages:{
+            signIn: '/sing-in'
+        },
+        session:{
+            strategy: "jwt"
+        },
+        secret: process.env.NEXTAUTH_SECRET
  }
