@@ -15,9 +15,11 @@ export async function POST(req: Request) {
             username: searchParams.get("username")
         }
         // Validate with zod
-       const result  = UsernameQuerySchema.parse(queryParam)
+       const result = UsernameQuerySchema.safeParse(queryParam)
        console.log(result)
-       if(!result.username){
+       if(!result.success){
+        const usernameErrors = result.error?.format().username?._errors || []    
+       }
     } catch (error) {
         console.error("Error checking username", error)
         return new Response(JSON.stringify({success: false, message: "Error checking username"}), {status: 500})
