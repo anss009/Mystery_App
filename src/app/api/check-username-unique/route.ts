@@ -37,11 +37,11 @@ export async function POST(req: Request) {
                 message: "Username is already taken"
             }, {status: 400})
       }
-      return Response.json(
+      return Response.json( 
             {
-                success: false,
+                success: true,
                 message: "Username is unique"
-            }, {status: 400})
+            }, {status: 200})
 
         
     } catch (error) {
