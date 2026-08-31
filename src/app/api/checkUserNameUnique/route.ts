@@ -18,8 +18,18 @@ export async function POST(req: Request) {
        const result = UsernameQuerySchema.safeParse(queryParam)
        console.log(result)
        if(!result.success){
-        const usernameErrors = result.error?.format().username?._errors || []    
+        const usernameErrors = result.error?.format().username?._errors || []
+        return response.json({
+            success: false,
+            message: usernameErrors?.length > 0 ? usernameErrors.join(", ") : "Invalid query parameter"
+        }, {status: 400})    
        }
+
+
+       const    {username} = result.data
+      const existingVerifiedUser =  UserModel.findOne({username, isVerified: true}
+
+        
     } catch (error) {
         console.error("Error checking username", error)
         return new Response(JSON.stringify({success: false, message: "Error checking username"}), {status: 500})
