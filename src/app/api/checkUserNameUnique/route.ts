@@ -30,6 +30,19 @@ export async function POST(req: Request) {
        const {username} = result.data
       const existingVerifiedUser =  await UserModel.findOne({username, isVerified: true})
 
+      if(existingVerifiedUser){
+        return Response.json(
+            {
+                success: false,
+                message: "Username is already taken"
+            }, {status: 400})
+      }
+      return Response.json(
+            {
+                success: false,
+                message: "Username is unique"
+            }, {status: 400})
+
         
     } catch (error) {
         console.error("Error checking username", error)
