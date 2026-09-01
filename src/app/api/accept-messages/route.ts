@@ -37,3 +37,32 @@ export async function POST(request: Request) {
         );
     }
 }
+export async function GET(request: Request){
+    await dbConnect()
+    const session = await getServerSession(authOption)
+    const user: User = session?.user as User
+    if (!session || !user) { 
+        return new Response(JSON.stringify({ success: false, message: "Not Authenticated" }), { status: 401 })
+    }
+    const userId = user._id;
+    
+   try {
+    const foundUser = await UserModel.findById(userId)
+    if(!foundUser){
+     return Response.json(
+         { success: false, message: "User not found" },
+         { status: 404 }
+     );
+    }
+    return Response.json(
+     { success: true, isAcceptingMessages: foundUser.isAcceptingMessage },
+     { status: 200 }
+ );
+   } catch (error) {
+    console.log("failed to fetch user status to accept messages ", error);
+        return Response.json(
+            { success: false, message: "Failed to fetch user status to accept messages" },
+            { status: 500 }
+        );
+   }
+}
