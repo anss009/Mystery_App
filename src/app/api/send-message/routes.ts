@@ -32,7 +32,21 @@ export async function POST(request: Request){
         const newMessage = {content,  createdAt: new Date()}
         user.messages.push(newMessage as unknown as Message)
         await user.save()
+
+        return Response.json({
+                success:true,
+                message: "Message send succesfully"
+            },{
+                status:200
+            })
+
     } catch (error) {
-        
+        console.log("Error adding messages", error)
+        return Response.json({
+                success:false,
+                message: "Internal Server Error"
+            },{
+                status:500
+            })
     }
 }
