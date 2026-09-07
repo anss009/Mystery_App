@@ -35,7 +35,7 @@ export async function POST(request: Request){
 
         return Response.json({
                 success:true,
-                message: "Message send succesfully"
+                message: "Message send Succesfully"
             },{
                 status:200
             })
