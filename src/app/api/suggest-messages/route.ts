@@ -1,5 +1,5 @@
 import { google } from '@ai-sdk/google';
-import { streamText } from 'ai';
+import { streamText, APICallError } from 'ai';
 import { NextResponse } from 'next/server';
 
 // Allow responses up to 30 seconds
@@ -24,14 +24,20 @@ export async function POST(req: Request) {
 
     return result.toTextStreamResponse();
   } catch (error: any) {
-    console.error('Error in suggest-messages route:', error);
-    return NextResponse.json(
-      {
-        success: false,
-        message: 'Failed to generate AI response.',
-        error: error?.message || 'Unknown error occurred.',
-      },
-      { status: 500 }
-    );
+    if (APICallError.isInstance(error)) {
+      const { name, statusCode, responseHeaders, message } = error;
+      return NextResponse.json(
+        {
+          name,
+          status: statusCode,
+          headers: responseHeaders,
+          message,
+        },
+        { status: statusCode || 500 }
+      );
+    } else {
+      console.error('An unexpected error occurred ', error);
+      throw error;
+    }
   }
 }
