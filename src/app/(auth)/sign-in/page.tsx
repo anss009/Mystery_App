@@ -7,7 +7,9 @@ import React, { useState, useEffect } from 'react'
 import { useDebounceValue } from 'usehooks-ts'
 import { toast } from "@/components/ui/toast"
 import { useRouter } from "next/navigation"
-import axios from "axios"
+import axios, {AxiosError} from "axios"
+import { ApiResponse } from "@/types/ApiResponse"
+import { set } from "node_modules/zod/v3/external.cjs"
 
 const page = () => {
   const [username, setUsername] = useState(' ');
@@ -45,11 +47,16 @@ const page = () => {
 
         setUsernameMessage(response.data.message);
         } catch (error) {
-
+          const axiosError = error as AxiosError<ApiResponse>;
+          setUsernameMessage(
+            axiosError.response?.data.message || "An error occurred while checking username" 
+          )
+        } finally {
+          setIsCheckingUsername(false);
         }
       }
     }
-
+    checkUsernameUniqueness();
   }, [debouncedUsername])
 
   return (
