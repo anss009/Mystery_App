@@ -8,6 +8,7 @@ import React, { useState } from 'react'
 const page = () => {
   const [username, setUsername] = useState(' ');
   const [usernameMessage, setUsernameMessage] = useState('');
+  const [isCheckingUsername, setIsCheckingUsername] = useState(false);
   return (
     <div>
       
