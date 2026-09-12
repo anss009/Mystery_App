@@ -6,7 +6,8 @@ import link from "next/link"
 import React, { useState } from 'react'
 
 const page = () => {
-  const [username, setUsername] = useState('')
+  const [username, setUsername] = useState(' ');
+  const [usernameMessage, setUsernameMessage] = useState('');
   return (
     <div>
       
