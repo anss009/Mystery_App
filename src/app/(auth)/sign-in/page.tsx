@@ -7,6 +7,7 @@ import React, { useState, useEffect } from 'react'
 import { useDebounceValue } from 'usehooks-ts'
 import { toast } from "@/components/ui/toast"
 import { useRouter } from "next/navigation"
+import axios from "axios"
 
 const page = () => {
   const [username, setUsername] = useState(' ');
@@ -40,7 +41,9 @@ const page = () => {
         setIsCheckingUsername(true);
         setUsernameMessage('');
         try{
-          await  
+        const response =   await axios.get(`/api/check-username-unique?username=${debouncedUsername}`);
+
+        setUsernameMessage(response.data.message);
         } catch (error) {
 
         }
