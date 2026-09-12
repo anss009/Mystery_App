@@ -64,7 +64,27 @@ const page = () => {
 
 
   const onSubmit = async(data: z.infer<typeof signupSchema>)=>{
-
+    setIsSubmitting(true);
+    try{
+      const response = await axios.post<ApiResponse>('/api/sign-up', data);
+      toast({
+        title: "Success",
+        description: response.data.message,
+        variant: "success",
+      });
+      router.replace(`/verify/${username}`);
+      setIsSubmitting(false);
+    }catch (error) {
+      console.log("Error signing up:", error); 
+      const axiosError = error as AxiosError<ApiResponse>;
+      let errorMessage = "An error occurred during sign-up";
+      toast({
+        title: "Error",
+        description: axiosError.response?.data.message || "An error occurred during sign-up",
+        variant: "destructive",
+      });
+      setIsSubmitting(false);
+    }
   }
 
   return (
