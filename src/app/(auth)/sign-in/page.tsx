@@ -9,6 +9,7 @@ const page = () => {
   const [username, setUsername] = useState(' ');
   const [usernameMessage, setUsernameMessage] = useState('');
   const [isCheckingUsername, setIsCheckingUsername] = useState(false);
+  const[isSubmitting, setIsSubmitting] = useState(false);
   return (
     <div>
       
