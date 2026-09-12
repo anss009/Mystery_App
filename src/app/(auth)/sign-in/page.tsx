@@ -11,6 +11,13 @@ import axios, {AxiosError} from "axios"
 import { ApiResponse } from "@/types/ApiResponse"
 import { set } from "node_modules/zod/v3/external.cjs"
 
+
+const signupSchema = z.object({
+  username: z.string().min(1, "Username is required"),
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+})
+
 const page = () => {
   const [username, setUsername] = useState(' ');
   const [usernameMessage, setUsernameMessage] = useState('');
@@ -24,15 +31,11 @@ const page = () => {
   // Zod implementation for form validation
 
   const form = useForm({
-    resolver: zodResolver(
-      z.object({signupSchema: z.object({
-        username: z.string().min(3, { message: "Username must be at least 3 characters long" })
-      })})
-    ),
+    resolver: zodResolver(signupSchema),
     defaultValues: {
-      signupSchema: {
-        username: "",
-      },
+      username: "",
+      email: "",
+      password: "",
     },
   }) 
 
@@ -60,7 +63,9 @@ const page = () => {
   }, [debouncedUsername])
 
 
-  const on
+  const onSubmit = async(data: z.infer<typeof signupSchema>)=>{
+
+  }
 
   return (
     <div>
