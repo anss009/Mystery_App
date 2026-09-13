@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation"
 import axios, { AxiosError } from "axios"
 import { ApiResponse } from "@/types/ApiResponse"
 import { set } from "node_modules/zod/v3/external.cjs"
-import { Form } from "lucide-react"
+import { Form, Loader2 } from "lucide-react"
 import { Field, FieldDescription, FieldError, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -163,8 +163,13 @@ const page = () => {
               )}
             />
           </form>
-          <Button type="submit">
-            SignUp
+          <Button type="submit" disabled ={isSubmitting}>
+            {
+              isSubmitting ? ( 
+              <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin"/> Please Wait
+              </> ) : ( 'Signup')
+            }
           </Button>
         </Form>
       </div>
