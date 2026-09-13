@@ -13,6 +13,7 @@ import { set } from "node_modules/zod/v3/external.cjs"
 import { Form } from "lucide-react"
 import { Field, FieldDescription, FieldError, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
 
 
 const signupSchema = z.object({
@@ -149,10 +150,10 @@ const page = () => {
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel htmlFor="email">Password</FieldLabel>
-                  <Input
-                    placeholder="Email"
+                  <Input type="password"
+                    placeholder="password"
                     {...field}
-                    id="password"
+                    id="password "
                     aria-invalid={fieldState.invalid}
                   /> 
                   {fieldState.invalid && (
@@ -162,6 +163,9 @@ const page = () => {
               )}
             />
           </form>
+          <Button type="submit">
+            SignUp
+          </Button>
         </Form>
       </div>
     </div>
