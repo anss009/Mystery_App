@@ -10,6 +10,8 @@ import { useRouter } from "next/navigation"
 import axios, {AxiosError} from "axios"
 import { ApiResponse } from "@/types/ApiResponse"
 import { set } from "node_modules/zod/v3/external.cjs"
+import { Form } from "lucide-react"
+import { Field } from "@/components/ui/field"
 
 
 const signupSchema = z.object({
@@ -88,10 +90,24 @@ const page = () => {
   }
 
   return (
-    <div>
-      
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="w-full max-w-md p-8 space-y-2 bg-white rounded shadow-md"> 
+        <div className="text-center">
+          <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6 text-gray-800">
+          Join Mystery Message
+          </h1>
+          <p className="mb-4 text-sm text-gray-600">
+            Signup to start your anoymous adventures.
+          </p>
+          </div> 
+          <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+ 
+              </form>
+          </Form>
+        </div>
     </div>
-  )
+  ) 
 }
 
 export default page
