@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation"
 import axios, { AxiosError } from "axios"
 import { ApiResponse } from "@/types/ApiResponse"
 import { set } from "node_modules/zod/v3/external.cjs"
-import { Form, Loader2 } from "lucide-react"
+import { Form, Link, Loader2 } from "lucide-react"
 import { Field, FieldDescription, FieldError, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -172,6 +172,13 @@ const page = () => {
             }
           </Button>
         </Form>
+        <div className=" text-center mt-4">
+            <p>
+              Already a member? {''}
+              <Link href="/sign-in" className="text-blue-600 hover:text-blue-800">
+              Sign in</Link>
+            </p>
+        </div>
       </div>
     </div>
   )
