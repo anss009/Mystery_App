@@ -143,6 +143,24 @@ const page = () => {
                 </Field>
               )}
             />
+            <Controller
+              name="password"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="email">Password</FieldLabel>
+                  <Input
+                    placeholder="Email"
+                    {...field}
+                    id="password"
+                    aria-invalid={fieldState.invalid}
+                  /> 
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
           </form>
         </Form>
       </div>
