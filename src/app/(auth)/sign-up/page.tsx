@@ -102,8 +102,9 @@ const SignUpPage = () => {
                   {...field}
                   onChange={(e) => {
                     field.onChange(e);
-                    setUsername(e.target.value);
+                    setUsername (e.target.value);
                   }}
+
                   id="username"
                   aria-invalid={fieldState.invalid}
                 />
@@ -114,7 +115,7 @@ const SignUpPage = () => {
                 )}
                 {!isCheckingUsername && usernameMessage && (
                   <p
-                    className={`text-sm mt-1 ${
+                    className={`text-sm mt-1 ${  
                       usernameMessage === "Username is unique"
                         ? "text-green-500"
                         : "text-red-500"
