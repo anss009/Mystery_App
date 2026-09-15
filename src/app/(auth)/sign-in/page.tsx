@@ -15,18 +15,16 @@ import { Field, FieldError, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { signUpValidation } from "@/schemas/signUpSchema"
+import { signInSchema } from "@/schemas/signInSchema"
 
 const SignUpPage = () => {
-  const [username, setUsername] = useState('');
-  const [usernameMessage, setUsernameMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [debouncedUsername] = useDebounceValue(username, 300);
   const router = useRouter()
+  const {toast} = useToast()
 
-  const form = useForm<z.infer<typeof signUpValidation>>({
-    resolver: zodResolver(signUpValidation),
+  const form = useForm<z.infer<typeof signInSchema>>({
+    resolver: zodResolver(signInSchema),
     defaultValues: {
-      username: "",
       email: "",
       password: "",
     },
