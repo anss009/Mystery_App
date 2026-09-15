@@ -20,9 +20,7 @@ import { signIn } from "next-auth/react"
 import { Description } from "node_modules/@base-ui/react/toast/index.parts.mjs"
 
 const SignUpPage = () => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter()
-  const {toast} = useToast()
 
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
