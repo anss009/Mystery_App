@@ -9,7 +9,7 @@ import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import * as z from 'zod'
 import { ApiResponse } from '@/types/ApiResponse'
-import { Input } from '@base-ui/react/input'
+import { Input } from '@/components/ui/input'
 import { Field, FieldError, FieldLabel } from "@/components/ui/field"
 import { Button } from '@/components/ui/button'
 

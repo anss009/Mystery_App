@@ -4,54 +4,54 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Controller, useForm } from "react-hook-form"
 import * as z from "zod"
 import Link from "next/link"
-import React, { useState, useEffect } from 'react'
-import { useDebounceValue } from 'usehooks-ts'
-import { toast } from "@/components/ui/toast"
+import React, { useState } from 'react'
 import { useRouter } from "next/navigation"
-import axios, { AxiosError } from "axios"
-import { ApiResponse } from "@/types/ApiResponse"
-import { Loader2 } from "lucide-react"
-import { Field, FieldError, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
-import { Button, buttonVariants } from "@/components/ui/button"
-import { signUpValidation } from "@/schemas/signUpSchema"
-import { signInSchema } from "@/schemas/signInSchema"
+import { Button } from "@/components/ui/button"
 import { signIn } from "next-auth/react"
-import { Description } from "node_modules/@base-ui/react/toast/index.parts.mjs"
+import { signInSchema } from "@/schemas/signInSchema"
+import { Field, FieldError, FieldLabel } from "@/components/ui/field"
+import { toast } from "@/components/ui/toast"
+import { Loader2 } from "lucide-react"
 
-const SignUpPage = () => {
+const SignInPage = () => {
   const router = useRouter()
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
-      email: "",
+      identifier: "",
       password: "",
     },
   })
 
-
   const onSubmit = async (data: z.infer<typeof signInSchema>) => {
-    const result  = await signIn('credentials', {
-      redirect:false,
-      identifier: data.identifier,
-      password: data.password
-    })
-    if(result?.error){
-      toast({
-          title: "Login failed",
-          Description: "Incorrect username or passsword",
-          variant: "destructive"
+    setIsSubmitting(true)
+    try {
+      const result = await signIn('credentials', {
+        redirect: false,
+        identifier: data.identifier,
+        password: data.password
       })
-    }else{
-      toast({
-          title: "Error",
-          Description: result?.error,
-          variant: "destructive"
+      if (result?.error) {
+        toast.add({
+          title: "Login Failed",
+          description: result.error === "CredentialsSignin" ? "Incorrect username or password" : result.error,
+          type: "error"
+        })
+      }
+      if (result?.url) {
+        router.replace('/dashboard')
+      }
+    } catch (error) {
+      toast.add({
+        title: "Error",
+        description: "An unexpected error occurred during login",
+        type: "error"
       })
-    }
-    if(result?.url){
-      router.replace('/dashboard')
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -63,7 +63,7 @@ const SignUpPage = () => {
             Join Mystery Message
           </h1>
           <p className="mb-4 text-sm text-gray-600">
-            SignIn to start your anonymous adventures.
+            Sign In to start your anonymous adventures.
           </p>
         </div>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -72,7 +72,7 @@ const SignUpPage = () => {
             control={form.control}
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor="email">Email/Username</FieldLabel>
+                <FieldLabel htmlFor="identifier">Email/Username</FieldLabel>
                 <Input
                   placeholder="Email/Username"
                   {...field}
@@ -93,7 +93,7 @@ const SignUpPage = () => {
                 <FieldLabel htmlFor="password">Password</FieldLabel>
                 <Input
                   type="password"
-                  placeholder="password"
+                  placeholder="Password"
                   {...field}
                   id="password"
                   aria-invalid={fieldState.invalid}
@@ -104,15 +104,21 @@ const SignUpPage = () => {
               </Field>
             )}
           />
-          <Button type="submit"  className="w-full">
-            SignIn
+          <Button type="submit" disabled={isSubmitting} className="w-full">
+            {isSubmitting ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please Wait
+              </>
+            ) : (
+              'Sign In'
+            )}
           </Button>
         </form>
         <div className="text-center mt-4">
           <p className="text-sm text-gray-600">
-            Already a member?{' '}
-            <Link href="/sign-in" className="text-blue-600 hover:text-blue-800">
-              Sign In
+            Not a member yet?{' '}
+            <Link href="/sign-up" className="text-blue-600 hover:text-blue-800">
+              Sign Up
             </Link>
           </p>
         </div>
@@ -121,4 +127,4 @@ const SignUpPage = () => {
   )
 }
 
-export default SignUpPage
+export default SignInPage
