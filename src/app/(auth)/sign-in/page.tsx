@@ -19,7 +19,6 @@ import { signUpValidation } from "@/schemas/signUpSchema"
 const SignUpPage = () => {
   const [username, setUsername] = useState('');
   const [usernameMessage, setUsernameMessage] = useState('');
-  const [isCheckingUsername, setIsCheckingUsername] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [debouncedUsername] = useDebounceValue(username, 300);
   const router = useRouter()
