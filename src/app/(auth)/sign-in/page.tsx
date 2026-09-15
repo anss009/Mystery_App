@@ -45,6 +45,12 @@ const SignUpPage = () => {
           Description: "Incorrect username or passsword",
           variant: "destructive"
       })
+    }else{
+      toast({
+          title: "Login failed",
+          Description: "Incorrect username or passsword",
+          variant: "destructive"
+      })
     }
     if(result?.url){
       router.replace('/dashboard')
