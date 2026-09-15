@@ -31,28 +31,6 @@ const SignUpPage = () => {
   })
 
 
-  const onSubmit = async (data: z.infer<typeof signUpValidation>) => {
-    setIsSubmitting(true);
-    try {
-      const response = await axios.post<ApiResponse>('/api/sign-up', data);
-      toast.add({
-        title: "Success",
-        description: response.data.message,
-        type: "success",
-      });
-      router.replace(`/verify/${data.username}`);
-    } catch (error) {
-      console.log("Error signing up:", error);
-      const axiosError = error as AxiosError<ApiResponse>;
-      toast.add({
-        title: "Error",
-        description: axiosError.response?.data.message || "An error occurred during sign-up",
-        type: "error",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  }
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
