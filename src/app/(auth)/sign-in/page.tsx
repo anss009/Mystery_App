@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { signUpValidation } from "@/schemas/signUpSchema"
 import { signInSchema } from "@/schemas/signInSchema"
+import { signIn } from "next-auth/react"
 
 const SignUpPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -31,6 +32,12 @@ const SignUpPage = () => {
   })
 
 
+  const onSubmit = async (data: z.infer<typeof signInSchema>) => {
+    await signIn('credentials', {
+      identifier: data.identifier,
+      password: data.password
+    })
+  }
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -45,45 +52,6 @@ const SignUpPage = () => {
         </div>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <Controller
-            name="username"
-            control={form.control}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor="username">Username</FieldLabel>
-                <Input
-                  placeholder="username"
-                  {...field}
-                  onChange={(e) => {
-                    field.onChange(e);
-                    setUsername (e.target.value);
-                  }}
-
-                  id="username"
-                  aria-invalid={fieldState.invalid}
-                />
-                {isCheckingUsername && (
-                  <div className="flex items-center gap-2 mt-1 text-sm text-gray-500">
-                    <Loader2 className="animate-spin h-4 w-4" /> Checking username...
-                  </div>
-                )}
-                {!isCheckingUsername && usernameMessage && (
-                  <p
-                    className={`text-sm mt-1 ${  
-                      usernameMessage === "Username is unique"
-                        ? "text-green-500"
-                        : "text-red-500"
-                    }`}
-                  >
-                    {usernameMessage}
-                  </p>
-                )}
-                {fieldState.invalid && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
-              </Field>
-            )}
-          />
-          <Controller
             name="email"
             control={form.control}
             render={({ field, fieldState }) => (
@@ -92,7 +60,7 @@ const SignUpPage = () => {
                 <Input
                   placeholder="Email"
                   {...field}
-                  id="email"
+                  id="identifier"
                   aria-invalid={fieldState.invalid}
                 />
                 {fieldState.invalid && (
