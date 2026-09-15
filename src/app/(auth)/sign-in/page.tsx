@@ -70,7 +70,7 @@ const SignUpPage = () => {
         </div>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <Controller
-            name="email"
+            name="identifier"
             control={form.control}
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
@@ -107,13 +107,7 @@ const SignUpPage = () => {
             )}
           />
           <Button type="submit" disabled={isSubmitting} className="w-full">
-            {isSubmitting ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please Wait
-              </>
-            ) : (
-              'Signup'
-            )}
+            
           </Button>
         </form>
         <div className="text-center mt-4">
