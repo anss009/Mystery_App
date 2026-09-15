@@ -13,10 +13,11 @@ import { ApiResponse } from "@/types/ApiResponse"
 import { Loader2 } from "lucide-react"
 import { Field, FieldError, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
 import { signUpValidation } from "@/schemas/signUpSchema"
 import { signInSchema } from "@/schemas/signInSchema"
 import { signIn } from "next-auth/react"
+import { Description } from "node_modules/@base-ui/react/toast/index.parts.mjs"
 
 const SignUpPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -33,10 +34,21 @@ const SignUpPage = () => {
 
 
   const onSubmit = async (data: z.infer<typeof signInSchema>) => {
-    await signIn('credentials', {
+    const result  = await signIn('credentials', {
+      redirect:false,
       identifier: data.identifier,
       password: data.password
     })
+    if(result?.error){
+      toast({
+          title: "Login failed",
+          Description: "Incorrect username or passsword",
+          variant: "destructive"
+      })
+    }
+    if(result?.url){
+      router.replace('/dashboard')
+    }
   }
 
   return (
