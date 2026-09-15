@@ -47,7 +47,7 @@ const SignUpPage = () => {
       })
     }else{
       toast({
-          title: "Login failed",
+          title: "Error",
           Description: "Incorrect username or passsword",
           variant: "destructive"
       })
