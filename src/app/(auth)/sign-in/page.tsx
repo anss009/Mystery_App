@@ -65,7 +65,7 @@ const SignUpPage = () => {
             Join Mystery Message
           </h1>
           <p className="mb-4 text-sm text-gray-600">
-            Signup to start your anonymous adventures.
+            SignIn to start your anonymous adventures.
           </p>
         </div>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -74,9 +74,9 @@ const SignUpPage = () => {
             control={form.control}
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor="email">Email</FieldLabel>
+                <FieldLabel htmlFor="email">Email/Username</FieldLabel>
                 <Input
-                  placeholder="Email"
+                  placeholder="Email/Username"
                   {...field}
                   id="identifier"
                   aria-invalid={fieldState.invalid}
