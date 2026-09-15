@@ -30,28 +30,6 @@ const SignUpPage = () => {
     },
   })
 
-  useEffect(() => {
-    const checkUsernameUniqueness = async () => {
-      if (debouncedUsername && debouncedUsername.trim().length > 0) {
-        setIsCheckingUsername(true);
-        setUsernameMessage('');
-        try {
-          const response = await axios.get<ApiResponse>(`/api/check-username-unique?username=${encodeURIComponent(debouncedUsername.trim())}`);
-          setUsernameMessage(response.data.message);
-        } catch (error) {
-          const axiosError = error as AxiosError<ApiResponse>;
-          setUsernameMessage(
-            axiosError.response?.data.message || "An error occurred while checking username"
-          );
-        } finally {
-          setIsCheckingUsername(false);
-        }
-      } else {
-        setUsernameMessage('');
-      }
-    }
-    checkUsernameUniqueness();
-  }, [debouncedUsername])
 
   const onSubmit = async (data: z.infer<typeof signUpValidation>) => {
     setIsSubmitting(true);
