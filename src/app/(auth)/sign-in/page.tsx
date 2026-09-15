@@ -106,8 +106,8 @@ const SignUpPage = () => {
               </Field>
             )}
           />
-          <Button type="submit" disabled={isSubmitting} className="w-full">
-            
+          <Button type="submit"  className="w-full">
+            SignIn
           </Button>
         </form>
         <div className="text-center mt-4">
