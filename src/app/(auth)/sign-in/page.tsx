@@ -48,7 +48,7 @@ const SignUpPage = () => {
     }else{
       toast({
           title: "Error",
-          Description: "Incorrect username or passsword",
+          Description: result?.error,
           variant: "destructive"
       })
     }
