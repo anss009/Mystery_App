@@ -22,7 +22,7 @@ const Navbar = () => {
                     </>
                 ) : (
                     <Link href='/sign-in'>
-                        <button>Login</button>
+                        <Button className='w-full'>Login</Button>
                     </Link>
                  )
             }
