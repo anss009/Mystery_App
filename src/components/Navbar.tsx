@@ -8,16 +8,22 @@ const user: User = session?.user
 
 const Navbar = () => {
   return (
-    <nav>
-        <div>
-            <a href="#"> Mystery Message</a>
+    <nav className='flex items-center justify-between bg-white p-6 shadow-sm'>
+        <div className='flex items-center gap-4'>
+            <Link href="/" className='text-2xl font-bold'> Mystery Message</Link>
             {
-                session ? (
+                session ? ( 
                     <>
                     <span> Welcome, {user.username || user.email}</span>
-                    <button>Logout</button>
+                    <button onClick={()=>{
+                        signOut()
+                    }}>Logout</button>
                     </>
-                ) : ()
+                ) : (
+                    <Link href='/sign-in'>
+                        <button>Login</button>
+                    </Link>
+                 )
             }
         </div>
     </nav>
