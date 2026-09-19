@@ -5,7 +5,7 @@ import { useSession, signOut } from 'next-auth/react'
 import {User} from 'next-auth'
 import { Button } from '@react-email/components'
 const {data: session} = useSession()
-const user: User = session?.user
+const user: User = session?.user as User
 
 const Navbar = () => {
   return (
