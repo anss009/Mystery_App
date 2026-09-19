@@ -13,8 +13,10 @@ const Navbar = () => {
             <a href="#"> Mystery Message</a>
             {
                 session ? (
+                    <>
                     <span> Welcome, {user.username || user.email}</span>
                     <button>Logout</button>
+                    </>
                 ) : ()
             }
         </div>
