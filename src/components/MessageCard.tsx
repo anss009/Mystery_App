@@ -1,14 +1,12 @@
 'use client'
+
+import React from 'react'
 import {
   Card,
-  CardAction,
   CardContent,
-  CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-
 import {
   AlertDialog,
   AlertDialogAction,
@@ -20,60 +18,71 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { Button } from "@react-email/components"
+import { Button } from "@/components/ui/button"
 import { X } from 'lucide-react'
 import { Message } from '@/model/User'
-import axios from "axios"
+import axios, { AxiosError } from "axios"
+import { toast } from "@/components/ui/toast"
+import { ApiResponse } from '@/types/ApiResponse'
 
 type MessageCardProps = {
   message: Message
-  onMessageDelete: (id:string) => void
+  onMessageDelete: (id: string) => void
 }
 
-export const MessageCard = ({message, onMessageDelete}: MessageCardProps) => {
-  
-    const {toast} = useToast()
-    const response =await  axios.delete(`/api/messages/${message._id}`)
-    handleDeleteConfirmed = async()=>{
-        if(response.status === 200){
-            toast.add({
-                title: "Message deleted successfully",
-                description: "The message has been deleted successfully",
-                type: "success"
-            })
-        }
+export const MessageCard = ({ message, onMessageDelete }: MessageCardProps) => {
+  const handleDeleteConfirmed = async () => {
+    try {
+      const messageId = message._id as unknown as string
+      const response = await axios.delete<ApiResponse>(`/api/delete-message/${messageId}`)
+      toast.add({
+        title: "Success",
+        description: response.data.message || "Message deleted successfully",
+        type: "success"
+      })
+      onMessageDelete(messageId)
+    } catch (error) {
+      const axiosError = error as AxiosError<ApiResponse>
+      toast.add({
+        title: "Error",
+        description: axiosError.response?.data.message || "Failed to delete message",
+        type: "error"
+      })
     }
-
-  const handleDeleteConfirmed = () => {
-    onMessageDelete(message.id)
-  } 
+  }
 
   return (
     <Card>
-  <CardHeader>
-    <CardTitle>Card Title</CardTitle>
-    <AlertDialog>
-      <AlertDialogTrigger>
-        <Button variant="outline">Delete</Button>
-      </AlertDialogTrigger>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-          <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your
-            account from our servers.
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={handleDeleteConfirmed} >Continue</AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
-    <CardDescription>Card Description</CardDescription>
-  </CardHeader>
-  <CardContent>
-  </CardContent>
-</Card>
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardTitle className="text-base font-semibold">{message.content}</CardTitle>
+        <AlertDialog>
+          <AlertDialogTrigger
+            render={
+              <Button variant="destructive" size="icon-sm">
+                <X className="w-4 h-4" />
+              </Button>
+            }
+          />
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+              <AlertDialogDescription>
+                This action cannot be undone. This will permanently delete this
+                message.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction onClick={handleDeleteConfirmed}>
+                Continue
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      </CardHeader>
+      <CardContent />
+    </Card>
   )
 }
+
+export default MessageCard
