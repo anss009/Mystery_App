@@ -9,6 +9,10 @@ const DashboardPage = () => {
   const [loading, setLoading] = useState(false)
   const [isSwitchLoading, setIsSwitchLoading] = useState(false)
 
+  const handleDeleteMessage = (messageId : string) => {
+    setMessages(messages.filter((message) => (message._id as unknown as string) !== messageId))
+  }
+
   
   return (
     <div className='bg-gray-50'>
