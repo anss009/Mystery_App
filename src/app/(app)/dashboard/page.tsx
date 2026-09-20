@@ -6,7 +6,9 @@ import { useState } from "react"
 const page = () => {
   const [messages, setMessages] = useState<Message[]>([])
   const [loading, setLoading] = useState(false)
-  const[isSwitchLoading, setIsSwitchLoading] = useState()
+  const[isSwitchLoading, setIsSwitchLoading] = useState(false)
+    const {toast} = useToast()
+
     return (
         <div className='bg-gray-50'>
             Dashboard
