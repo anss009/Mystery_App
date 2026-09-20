@@ -34,7 +34,7 @@ const DashboardPage = () => {
     setIsSwitchLoading(true)
     try {
       const response = await axios.get<ApiResponse>('/api/accept-messages')
-      setValue('acceptMessage', response.data.isAcceptingMessages ?? false)
+      setValue('acceptMessage', response.data.isAcceptingMessages   ?? false)
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>
       toast.error(axiosError.response?.data.message || "Failed to fetch message settings")
@@ -42,7 +42,20 @@ const DashboardPage = () => {
       setIsSwitchLoading(false)
     }
   }, [setValue])
- 
+  
+  const fetchMessages = useCallback(async () => {
+    setLoading(true)
+    try {
+      const response = await axios.get<ApiResponse>('/api/get-messages')
+      setMessages(response.data.messages ?? [])
+    } catch (error) {
+      const axiosError = error as AxiosError<ApiResponse>
+      toast.error(axiosError.response?.data.message || "Failed to fetch messages")
+    } finally {
+      setLoading(false)
+    }
+  }, [])
+
   return (
     <div className='bg-gray-50'>
       Dashboard
