@@ -6,7 +6,7 @@ import { ApiResponse } from "@/types/ApiResponse"
 import { zodResolver } from "@hookform/resolvers/zod"
 import axios, { AxiosError } from "axios"
 import { useSession } from "next-auth/react"
-import { useCallback, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import z from "zod"
@@ -49,13 +49,22 @@ const DashboardPage = () => {
     try {
       const response = await axios.get<ApiResponse>('/api/get-messages')
       setMessages(response.data.messages ?? []) 
+      if(refresh){
+        toast.success("Messages refreshed successfully")
+      }
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>
       toast.error(axiosError.response?.data.message || "Failed to fetch messages")
     } finally {
       setLoading(false)
     }
-  }, [])
+  }, [ setLoading, setMessages])
+
+  useEffect(() => {
+    if(!session || !session.user) return 
+    fetchMessages()
+    fetchAcceptMessage()
+  },[session, setValue, fetchAcceptMessage,fetchMessages])
 
    return (
     <div className='bg-gray-50'>
