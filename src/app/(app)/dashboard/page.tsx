@@ -2,18 +2,19 @@
 
 import { Message } from "@/model/User"
 import { useState } from "react"
+import { toast } from "sonner"
 
-const page = () => {
+const DashboardPage = () => {
   const [messages, setMessages] = useState<Message[]>([])
   const [loading, setLoading] = useState(false)
-  const[isSwitchLoading, setIsSwitchLoading] = useState(false)
-    const {toast} = useToast()
+  const [isSwitchLoading, setIsSwitchLoading] = useState(false)
 
-    return (
-        <div className='bg-gray-50'>
-            Dashboard
-        </div>
-    )
+  
+  return (
+    <div className='bg-gray-50'>
+      Dashboard
+    </div>
+  )
 }
 
-export default page
+export default DashboardPage

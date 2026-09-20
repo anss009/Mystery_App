@@ -3,7 +3,7 @@
 import { verifySchema } from '@/schemas/verifySchema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import axios, { AxiosError } from 'axios'
-import { toast } from "@/components/ui/toast"
+import { toast } from "sonner"
 import { useParams, useRouter } from 'next/navigation'
 import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
@@ -28,20 +28,11 @@ const verifyAccount = () => {
                 code : data.code
             })
 
-            toast.add({
-                title: 'Success',
-                description: response.data.message,
-                type: 'success',
-            })
-
+            toast.success(response.data.message)
             router.replace('/sign-in')
         } catch (error) {
             const axiosError = error as AxiosError<ApiResponse>
-            toast.add({
-                title: 'Error',
-                description: axiosError.response?.data.message || 'Error verifying code',
-                type: 'error',
-            })
+            toast.error(axiosError.response?.data.message || 'Error verifying code')
         }
     }
   return (

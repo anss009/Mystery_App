@@ -6,7 +6,7 @@ import * as z from "zod"
 import Link from "next/link"
 import React, { useState, useEffect } from 'react'
 import { useDebounceValue } from 'usehooks-ts'
-import { toast } from "@/components/ui/toast"
+import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import axios, { AxiosError } from "axios"
 import { ApiResponse } from "@/types/ApiResponse"
@@ -60,20 +60,12 @@ const SignUpPage = () => {
     setIsSubmitting(true);
     try {
       const response = await axios.post<ApiResponse>('/api/sign-up', data);
-      toast.add({
-        title: "Success",
-        description: response.data.message,
-        type: "success",
-      });
+      toast.success(response.data.message);
       router.replace(`/verify/${data.username}`);
     } catch (error) {
       console.log("Error signing up:", error);
       const axiosError = error as AxiosError<ApiResponse>;
-      toast.add({
-        title: "Error",
-        description: axiosError.response?.data.message || "An error occurred during sign-up",
-        type: "error",
-      });
+      toast.error(axiosError.response?.data.message || "An error occurred during sign-up");
     } finally {
       setIsSubmitting(false);
     }

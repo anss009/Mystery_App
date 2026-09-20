@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button"
 import { signIn } from "next-auth/react"
 import { signInSchema } from "@/schemas/signInSchema"
 import { Field, FieldError, FieldLabel } from "@/components/ui/field"
-import { toast } from "@/components/ui/toast"
+import { toast } from "sonner"
 import { Loader2 } from "lucide-react"
 
 const SignInPage = () => {
@@ -35,21 +35,13 @@ const SignInPage = () => {
         password: data.password
       })
       if (result?.error) {
-        toast.add({
-          title: "Login Failed",
-          description: result.error === "CredentialsSignin" ? "Incorrect username or password" : result.error,
-          type: "error"
-        })
+        toast.error(result.error === "CredentialsSignin" ? "Incorrect username or password" : result.error)
       }
       if (result?.url) {
         router.replace('/dashboard')
       }
     } catch (error) {
-      toast.add({
-        title: "Error",
-        description: "An unexpected error occurred during login",
-        type: "error"
-      })
+      toast.error("An unexpected error occurred during login")
     } finally {
       setIsSubmitting(false)
     }
