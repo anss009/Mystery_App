@@ -10,6 +10,7 @@ import { useSession } from "next-auth/react"
 import { useCallback, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
+import { useCopyToClipboard } from "usehooks-ts"
 import z from "zod"
 
 const DashboardPage = () => {
@@ -82,7 +83,7 @@ const DashboardPage = () => {
   const baseurl = `${window.location.protocol}// ${window.location.host}`
   const profileUrl = `${baseurl}/u/${username}`
   
-  cosnt 
+  cosnt useCopyToClipboard
 
   if (!session || !session.user) {
     return <div>Please Login</div>
