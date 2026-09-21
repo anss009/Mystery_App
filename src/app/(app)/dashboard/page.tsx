@@ -4,6 +4,7 @@ import { Message } from "@/model/User"
 import { acceptMessageSchema } from "@/schemas/acceptMessageSchema"
 import { ApiResponse } from "@/types/ApiResponse"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { Button } from "@react-email/components"
 import axios, { AxiosError } from "axios"
 import { User } from "next-auth"
 import { useSession } from "next-auth/react"
@@ -92,7 +93,13 @@ const DashboardPage = () => {
     return <div>Please Login</div>
   } 
    return (
-    
+    <div className="p-4 md:p-8 w-full">
+      <h2 className="text-2xl font-bold mb-4 ">Copy Your unique link</h2>{' '}
+      <div className="flex items-centre">
+          <input type="text" value={profileUrl} disabled className="bg-gray-50 border border-gray-300 rounded-l px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-500 w-80" />
+          <Button onClick={copyToClipboard}>Copy</Button>
+      </div>
+    </div>
   )
 }
 
