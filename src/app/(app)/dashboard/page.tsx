@@ -5,6 +5,7 @@ import { acceptMessageSchema } from "@/schemas/acceptMessageSchema"
 import { ApiResponse } from "@/types/ApiResponse"
 import { zodResolver } from "@hookform/resolvers/zod"
 import axios, { AxiosError } from "axios"
+import { User } from "next-auth"
 import { useSession } from "next-auth/react"
 import { useCallback, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
@@ -75,6 +76,10 @@ const DashboardPage = () => {
       toast.error(axiosError.response?.data.message || "Failed to fetch messages ")
     }
   }
+
+  const {username} = session?.user as User
+  
+
   if (!session || !session.user) {
     return <div>Please Login</div>
   } 
