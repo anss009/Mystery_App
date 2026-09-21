@@ -78,7 +78,8 @@ const DashboardPage = () => {
   }
 
   const {username} = session?.user as User
-  
+  // 
+  const baseurl = `${window.location.protocol}// ${window.location.host}` 
 
   if (!session || !session.user) {
     return <div>Please Login</div>
