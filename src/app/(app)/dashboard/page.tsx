@@ -83,17 +83,16 @@ const DashboardPage = () => {
   const baseurl = `${window.location.protocol}// ${window.location.host}`
   const profileUrl = `${baseurl}/u/${username}`
   
-  cosnt useCopyToClipboard = ()=>{
-    
+  const copyToClipboard = ()=>{
+        navigator.clipboard.writeText(profileUrl)
+        toast.success("Profile URL copied to clipboard") 
   }
 
   if (!session || !session.user) {
     return <div>Please Login</div>
   } 
    return (
-    <div className='bg-gray-50'>
-      Dashboard
-    </div>
+    
   )
 }
 
