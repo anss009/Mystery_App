@@ -83,7 +83,9 @@ const DashboardPage = () => {
   const baseurl = `${window.location.protocol}// ${window.location.host}`
   const profileUrl = `${baseurl}/u/${username}`
   
-  cosnt useCopyToClipboard
+  cosnt useCopyToClipboard = ()=>{
+    
+  }
 
   if (!session || !session.user) {
     return <div>Please Login</div>
