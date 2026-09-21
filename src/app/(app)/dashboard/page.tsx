@@ -3,6 +3,7 @@
 import { Message } from "@/model/User"
 import { acceptMessageSchema } from "@/schemas/acceptMessageSchema"
 import { ApiResponse } from "@/types/ApiResponse"
+import { Separator, Switch } from "@base-ui/react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from "@react-email/components"
 import axios, { AxiosError } from "axios"
@@ -19,16 +20,16 @@ const DashboardPage = () => {
   const [loading, setLoading] = useState(false)
   const [isSwitchLoading, setIsSwitchLoading] = useState(false)
 
-  const handleDeleteMessage = (messageId : string) => {
+  const handleDeleteMessage = (messageId: string) => {
     setMessages(messages.filter((message) => (message._id as unknown as string) !== messageId))
   }
 
   const { data: session } = useSession()
-  
+
   const form = useForm<z.infer<typeof acceptMessageSchema>>({
     resolver: zodResolver(acceptMessageSchema)
   })
-      
+
   const { register, watch, setValue } = form
 
   const acceptMessages = watch("acceptMessage")
@@ -37,7 +38,7 @@ const DashboardPage = () => {
     setIsSwitchLoading(true)
     try {
       const response = await axios.get<ApiResponse>('/api/accept-messages')
-      setValue('acceptMessage', response.data.isAcceptingMessages   ?? false)
+      setValue('acceptMessage', response.data.isAcceptingMessages ?? false)
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>
       toast.error(axiosError.response?.data.message || "Failed to fetch message settings")
@@ -45,14 +46,14 @@ const DashboardPage = () => {
       setIsSwitchLoading(false)
     }
   }, [setValue])
-  
-  const fetchMessages = useCallback(async (refresh : boolean = false) => {
+
+  const fetchMessages = useCallback(async (refresh: boolean = false) => {
     setLoading(true)
     setIsSwitchLoading(false)
     try {
       const response = await axios.get<ApiResponse>('/api/get-messages')
-      setMessages(response.data.messages ?? []) 
-      if(refresh){
+      setMessages(response.data.messages ?? [])
+      if (refresh) {
         toast.success("Messages refreshed successfully")
       }
     } catch (error) {
@@ -61,45 +62,66 @@ const DashboardPage = () => {
     } finally {
       setLoading(false)
     }
-  }, [ setLoading, setMessages])
+  }, [setLoading, setMessages])
 
   useEffect(() => {
-    if(!session || !session.user) return 
+    if (!session || !session.user) return
     fetchMessages()
     fetchAcceptMessage()
-  },[session, setValue, fetchAcceptMessage,fetchMessages])
+  }, [session, setValue, fetchAcceptMessage, fetchMessages])
   const handleSwitchChange = async () => {
     try {
-      const response = await axios.post<ApiResponse>('/api/accept-messages', { acceptMessages : !acceptMessages})
-        setValue('acceptMessage', !acceptMessages)
-        toast.success(response.data.message)
+      const response = await axios.post<ApiResponse>('/api/accept-messages', { acceptMessages: !acceptMessages })
+      setValue('acceptMessage', !acceptMessages)
+      toast.success(response.data.message)
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>
       toast.error(axiosError.response?.data.message || "Failed to fetch messages ")
     }
   }
 
-  const {username} = session?.user as User
+  const { username } = session?.user as User
   // 
   const baseurl = `${window.location.protocol}// ${window.location.host}`
   const profileUrl = `${baseurl}/u/${username}`
-  
-  const copyToClipboard = ()=>{
-        navigator.clipboard.writeText(profileUrl)
-        toast.success("Profile URL copied to clipboard") 
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(profileUrl)
+    toast.success("Profile URL copied to clipboard")
   }
 
   if (!session || !session.user) {
     return <div>Please Login</div>
-  } 
-   return (
-    <div className="p-4 md:p-8 w-full">
-      <h2 className="text-2xl font-bold mb-4 ">Copy Your unique link</h2>{' '}
-      <div className="flex items-centre">
+  }
+  return (
+    <>
+    <div className="my-8 mx-auto p-6 max-w-6xl bg-white rounded w-full max-w-4xl shadow-xl space-y-6">
+      <h1 className="text-4xl font-bold mb-4 ">User Dashboard</h1>
+      <div className="p-4 md:p-8 w-full">
+        <h2 className="text-2xl font-bold mb-4 ">Copy Your unique link</h2>{' '}
+        <div className="flex items-centre">
           <input type="text" value={profileUrl} disabled className="bg-gray-50 border border-gray-300 rounded-l px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-500 w-80" />
           <Button onClick={copyToClipboard}>Copy</Button>
+        </div>
       </div>
     </div>
+
+    <div className="mb-4 ">
+      <Switch>
+        {...register('acceptMessages')}
+        checked={acceptMessages}
+        onCheckedChange={handleSwitchChange}
+        disabled={isSwitchLoading}
+      </Switch>
+      <div>
+        <label htmlFor="acceptMessages" className="text-sm font-semibold mr-2">Accept Messages:</label>
+        <span className="text-sm font-semibold mr-2">{acceptMessages ? 'On' : 'Off'}</span>
+      </div>
+      <Separator/>
+
+      
+    </div>
+  </>
   )
 }
 
