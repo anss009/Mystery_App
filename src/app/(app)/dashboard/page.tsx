@@ -1,18 +1,20 @@
 'use client'
 
+import MessageCard from "@/components/MessageCard"
+import { Button } from "@/components/ui/button"
+import { Separator } from "@/components/ui/separator"
+import { Switch } from "@/components/ui/switch"
 import { Message } from "@/model/User"
 import { acceptMessageSchema } from "@/schemas/acceptMessageSchema"
 import { ApiResponse } from "@/types/ApiResponse"
-import { Separator, Switch } from "@base-ui/react"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Button } from "@react-email/components"
 import axios, { AxiosError } from "axios"
+import { Loader2 } from "lucide-react"
 import { User } from "next-auth"
 import { useSession } from "next-auth/react"
 import { useCallback, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
-import { useCopyToClipboard } from "usehooks-ts"
 import z from "zod"
 
 const DashboardPage = () => {
@@ -82,7 +84,7 @@ const DashboardPage = () => {
 
   const { username } = session?.user as User
   // 
-  const baseurl = `${window.location.protocol}// ${window.location.host}`
+  const baseurl = `${window.location.protocol}//${window.location.host}`
   const profileUrl = `${baseurl}/u/${username}`
 
   const copyToClipboard = () => {
@@ -107,19 +109,35 @@ const DashboardPage = () => {
     </div>
 
     <div className="mb-4 ">
-      <Switch>
-        {...register('acceptMessages')}
+      <Switch
+        {...register('acceptMessage')}
         checked={acceptMessages}
         onCheckedChange={handleSwitchChange}
         disabled={isSwitchLoading}
-      </Switch>
+      />
       <div>
         <label htmlFor="acceptMessages" className="text-sm font-semibold mr-2">Accept Messages:</label>
         <span className="text-sm font-semibold mr-2">{acceptMessages ? 'On' : 'Off'}</span>
       </div>
       <Separator/>
 
-      
+      <Button className="mt-4" variant="outline" onClick={(e) => fetchMessages(true)}>
+        {loading ? <Loader2/> : "Refresh Messages"}
+      </Button>
+
+      <div className="space-y-4 mt-4">
+        {messages.length>0?(
+          messages.map((messages, index) => (
+            <MessageCard
+              key={index}
+              message={messages}
+              onMessageDelete={handleDeleteMessage}
+              />
+          ))
+        ): (
+          <p>No messages to display</p>
+        )}
+      </div>
     </div>
   </>
   )
