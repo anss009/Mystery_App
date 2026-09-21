@@ -65,17 +65,17 @@ const DashboardPage = () => {
     fetchMessages()
     fetchAcceptMessage()
   },[session, setValue, fetchAcceptMessage,fetchMessages])
-  const  handleSwitchChange = async()={
+  const handleSwitchChange = async () => {
     try {
       const response = await axios.post<ApiResponse>('/api/accept-messages', { acceptMessages : !acceptMessages})
-        setValue('acceptMessages',!acceptMessages)
+        setValue('acceptMessage', !acceptMessages)
         toast.success(response.data.message)
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>
       toast.error(axiosError.response?.data.message || "Failed to fetch messages ")
     }
   }
-  if(session || !session.user){
+  if (!session || !session.user) {
     return <div>Please Login</div>
   } 
    return (
