@@ -8,8 +8,9 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel"
+import Autoplay from "embla-carousel-react/react"
 
-
+import messages from "@/messages.json"
 
 const Home = () => {
   return (
