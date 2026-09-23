@@ -22,7 +22,7 @@ const Home = () => {
             Dive into the World of Anonymous Feedback
           </h1>
           <p className="mt-3 md:mt-4 text-base md:text-lg text-gray-400">
-            True Feedback - Where your identity remains a secret.
+            True Feedback - Where your identity remains a secret!
           </p>
         </section>
 
