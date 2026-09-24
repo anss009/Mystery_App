@@ -27,7 +27,7 @@ const Home = () => {
         </section>
 
         <Carousel
-          plugins={[Autoplay({ delay: 2500, stopOnInteraction: false })]}
+          plugins={[Autoplay({ delay: 2500,  stopOnInteraction: false })]}
           className="w-full max-w-xs md:max-w-xl"
         >
           <CarouselContent>
