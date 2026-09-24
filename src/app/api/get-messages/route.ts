@@ -16,31 +16,29 @@ export async function GET(request:Request) {
     const userId = new mongoose.Types.ObjectId(user._id);
 
     try {
-        const user = await UserModel.aggregate([
-            {$match: {id:userId}},
-            {$unwind: 'messages'},
-            {$sort:{'messages.createdAt': -1}},
-            {$group:{_id: '$_id', messages: {
-                $push: 'messages'
-            }}}
-        ])
-          if(!user || user.length === 0){
-    return Response.json(
-        { success: false, message: "User not found" },
-        { status: 404 }
-    );
-   }
-   return Response.json(
-    { success: true, messages: user[0].messsages },
-    { status: 200 }
-);
+        const foundUser = await UserModel.findById(userId)
+        if (!foundUser) {
+            return Response.json(
+                { success: false, message: "User not found" },
+                { status: 404 }
+            );
+        }
+
+        const sortedMessages = (foundUser.messages || []).sort(
+            (a, b) => new Date(b.createAt).getTime() - new Date(a.createAt).getTime()
+        )
+
+        return Response.json(
+            { success: true, messages: sortedMessages },
+            { status: 200 }
+        );
     } catch (error) {
-        console.log("An Unexpected error occured", error)
+        console.log("An Unexpected error occurred", error)
         return Response.json({
-                success:false,
-                message: "Not Authunticated"
-            },{
-                status:500
-            })
+            success: false,
+            message: "Internal Server Error"
+        }, {
+            status: 500
+        })
     }
 }

@@ -1,14 +1,5 @@
-﻿[
-  {
-    "category": "Feedback",
-    "message": "What's one thing you think I could genuinely improve about myself?"
-  },
-  {
-    "category": "Curiosity",
-    "message": "If you could ask me anything completely anonymously, what would it be?"
-  },
-  {
-    "category": "Fun",
-    "message": "What's one fun or surprising fact about yourself that most people don't know?"
-  }
+[
+  {"category": "Feedback", "message": "What is one thing you think I could genuinely improve about myself?"},
+  {"category": "Curiosity", "message": "If you could ask me anything completely anonymously, what would it be?"},
+  {"category": "Fun", "message": "What is one fun or surprising fact about yourself that most people do not know?"}
 ]
