@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/carousel"
 import Autoplay from "embla-carousel-autoplay"
 import messages from "@/app/messages.json"
-import { Mail } from "lucide-react"
+import { Mail } from "lucide-react" 
 
 const Home = () => {
   return (
