@@ -34,6 +34,10 @@ export default function SendMessage() {
     error,
   } = useCompletion({
     api: '/api/suggest-messages',
+    streamProtocol: 'text',
+    onError: (err) => {
+      toast.error(err?.message || 'Failed to fetch suggestions')
+    },
   })
 
   const form = useForm<z.infer<typeof messageSchema>>({
@@ -120,6 +124,7 @@ export default function SendMessage() {
       <div className="space-y-4 my-8">
         <div className="space-y-2">
           <Button
+            type="button"
             onClick={fetchSuggestedMessages}
             className="my-4"
             disabled={isSuggestLoading}
@@ -146,6 +151,7 @@ export default function SendMessage() {
             {aiMessages.length > 0
               ? aiMessages.map((message, index) => (
                   <Button
+                    type="button"
                     key={index}
                     variant="outline"
                     className="mb-2 text-left justify-start h-auto py-3 px-4 whitespace-normal"
@@ -156,6 +162,7 @@ export default function SendMessage() {
                 ))
               : suggestedMessages.map((item, index) => (
                   <Button
+                    type="button"
                     key={index}
                     variant="outline"
                     className="mb-2 text-left justify-start h-auto py-3 px-4 whitespace-normal"
