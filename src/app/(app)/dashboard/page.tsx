@@ -29,7 +29,10 @@ const DashboardPage = () => {
   const { data: session } = useSession()
 
   const form = useForm<z.infer<typeof acceptMessageSchema>>({
-    resolver: zodResolver(acceptMessageSchema)
+    resolver: zodResolver(acceptMessageSchema),
+    defaultValues: {
+      acceptMessage: false,
+    },
   })
 
   const { register, watch, setValue } = form
