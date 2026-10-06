@@ -31,7 +31,6 @@ export default function SendMessage() {
     complete,
     completion,
     isLoading: isSuggestLoading,
-    error,
   } = useCompletion({
     api: '/api/suggest-messages',
     streamProtocol: 'text',
@@ -78,7 +77,7 @@ export default function SendMessage() {
   const fetchSuggestedMessages = async () => {
     try {
       await complete('')
-    } catch (err) {
+    } catch {
       toast.error('Failed to fetch suggestions')
     }
   }

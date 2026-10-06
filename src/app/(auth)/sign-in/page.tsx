@@ -40,7 +40,7 @@ const SignInPage = () => {
       if (result?.url) {
         router.replace('/dashboard')
       }
-    } catch (error) {
+    } catch {
       toast.error("An unexpected error occurred during login")
     } finally {
       setIsSubmitting(false)

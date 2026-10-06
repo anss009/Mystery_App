@@ -15,9 +15,12 @@ export const authOption: NextAuthOptions = {
                 username: { label: "email", type: "text" },
                 password: { label: "password", type: "password" }
             },
-            async authorize(credentials: any): Promise<any> {
+            async authorize(credentials: Record<string, string> | undefined) {
                 await dbConnect()
                 try {
+                    if (!credentials) {
+                        throw new Error("No credentials provided")
+                    }
                     const user = await UserModel.findOne({
                         $or: [
                             { email: credentials.identifier },
@@ -33,12 +36,13 @@ export const authOption: NextAuthOptions = {
 
                     const isPasswordCorrect = await bcrypt.compare(credentials.password, user.password)
                     if (isPasswordCorrect) {
-                        return user
+                        return user as unknown as import("next-auth").User
                     } else {
                         throw new Error("Incorrect User")
                     }
-                } catch (error: any) {
-                    throw new Error(error)
+                } catch (error: unknown) {
+                    const message = error instanceof Error ? error.message : "Authentication error"
+                    throw new Error(message)
                 }
             }
         })
@@ -48,7 +52,7 @@ export const authOption: NextAuthOptions = {
             if (user) {
                 token._id = user._id?.toString()
                 token.isVerified = user.isVerified;
-                token.isAcceptingMessages = user.isAcceptingMessages;
+                token.isAcceptingMessages = user.isAcceptingMessages ?? (user as unknown as { isAcceptingMessage?: boolean }).isAcceptingMessage ?? true;
                 token.username = user.username
             }
             return token

@@ -5,7 +5,7 @@ import { NextResponse } from 'next/server';
 // Allow responses up to 30 seconds
 export const maxDuration = 30;
 
-export async function POST(req: Request) {
+export async function POST() {
   try {
     if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
       return NextResponse.json(
@@ -24,7 +24,7 @@ export async function POST(req: Request) {
     });
 
     return result.toTextStreamResponse();
-  } catch (error: any) {
+  } catch (error: unknown) {
     if (APICallError.isInstance(error)) {
       console.error('Gemini API Error:', error.message);
       return NextResponse.json(
