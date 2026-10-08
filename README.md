@@ -1,6 +1,6 @@
 # Mystery Message
 
-An anonymous messaging app where anyone can send you a message through your personal link — no account needed on the sender's side. Built as a learning project to practice full-stack Next.js development.
+An anonymous messaging app where anyone can send you a message through your personal link, no account needed on the sender's side. Built as a learning project to practice full-stack Next.js development.
 
 > Built for learning purposes. Covers auth, database design, email integration, AI streaming, and full-stack Next.js App Router patterns in one project.
 
