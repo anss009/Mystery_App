@@ -148,6 +148,12 @@ emails/             # React Email templates (VerificationEmail)
 
 ---
 
+## Application Workflow
+
+![Application Workflow](./public/app_workflow_diagram.jpg)
+
+---
+
 ## Deployment
 
 The app is standard Next.js and deploys to Vercel without any special config. Make sure to add all environment variables in your Vercel project settings.
