@@ -91,6 +91,18 @@ npm run lint     # Run ESLint
 
 ---
 
+## Architecture
+
+The app is structured in three layers:
+
+- **Client** — browser-rendered Next.js pages (auth pages, dashboard, public send page)
+- **Next.js App Router** — handles both UI and API in one place. Middleware runs JWT checks on every request and redirects accordingly
+- **External Services** — MongoDB for data, NextAuth for sessions, Resend for email, Gemini for AI suggestions
+
+![Architecture](./public/app_architecture_diagram.jpg)
+
+---
+
 ## Project Structure
 
 ```
