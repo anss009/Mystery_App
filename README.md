@@ -2,6 +2,8 @@
 
 An anonymous messaging app where users can receive messages from anyone via a shareable link, without the sender needing an account. Built with Next.js, MongoDB, NextAuth, and Gemini AI.
 
+> **This project was built for learning purposes.** It covers full-stack Next.js development, authentication, database integration, email services, and AI API usage — all in one project.
+
 ---
 
 ## What It Does
